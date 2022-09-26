@@ -3,13 +3,14 @@ project(boids)
 
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 20)
-
-# define paths
-set(SRC_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(TEST_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/test)
+set(SFML_LIBS sfml-graphics sfml-system sfml-window)
 
 #include testfiles
 FILE (GLOB UNIT_TESTS "test/*.c*")
+FILE (GLOB SRC_FILES "src/*.c*")
+
+find_package(SFML 2 REQUIRED COMPONENTS graphics system window)
+find_package(Threads REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -23,6 +24,7 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
+# Add the test executable
 add_executable(
   unit_tests
   test/unit_tests.cc
@@ -35,3 +37,17 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(unit_tests)
+
+# Add the main executable
+add_executable(
+    ${PROJECT_NAME}
+    ${SRC_FILES}
+)
+target_include_directories(${PROJECT_NAME}
+    PRIVATE    
+    "include"
+)
+target_link_libraries(${PROJECT_NAME}
+    ${SFML_LIBS}
+    pthread
+)
