@@ -4,7 +4,7 @@
 
 GTEST_API_ int main(int argc, char **argv) 
 {
-    std::cout << "Running se-states Unit Tests" << std::endl;
+    std::cout << "Running boids Unit Tests" << std::endl;
 
 	testing::InitGoogleTest(&argc, argv);
 
